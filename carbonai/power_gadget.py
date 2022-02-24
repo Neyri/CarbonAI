@@ -41,6 +41,8 @@ from .utils import (
     TOTAL_ENERGY_PROCESS_MEMORY,
     WIN_INTELPOWERLOG_FILENAME,
     CPU_ESTIMATE_PARAMS,
+    CPU_DEFAULT_TDP,
+    RAM_ESTIMATE_CONSUMPTION,
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -328,14 +330,32 @@ class NoPowerGadget(PowerGadget):
     def __init__(self, tdp=None, ram_power_usage=None, **kwargs):
         super().__init__()
         self.start_time = 0
-        self.tdp = tdp
-        self.ram_power_usage = ram_power_usage
+        self.tdp = self.__set_tdp(tdp)
+        self.ram_power_usage = self.__set_ram_power_usage(ram_power_usage)
 
         self.record_cpu_power = []
         self.record_process_cpu_power = []
         self.record_ram_power = []
         self.record_process_ram_power = []
         self.record_times = []
+
+    def __set_tdp(self, tdp):
+        if tdp is None:
+            LOGGER.info(
+                "The user didn't set its cpu's TDP, we will into our database"
+            )
+            # get cpu ref and checks if present in our database
+            LOGGER.warning(
+                "Didn't find any CPU matching the user's one. "
+                "We will use the default value %s" % CPU_DEFAULT_TDP
+            )
+            tdp = CPU_DEFAULT_TDP
+        return tdp
+
+    def __set_ram_power_usage(self, ram_power_usage):
+        if ram_power_usage is None:
+            ram_power_usage = RAM_ESTIMATE_CONSUMPTION
+        return ram_power_usage
 
     def __compute_cpu_power_usage(self, cpu_usage):
         # cpu_usage is between 0 and 100, scale to be 0-1 interval

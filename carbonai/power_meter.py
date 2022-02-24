@@ -318,7 +318,11 @@ class PowerMeter:
         return self.SERVER_PUE  # pue for a server
 
     def __set_powergadget_linux(
-        self, powerlog_path=None, powerlog_save_path=None
+        self,
+        powerlog_path=None,
+        powerlog_save_path=None,
+        tdp=None,
+        ram_power_usage=None,
     ):
         if POWERLOG_PATH_LINUX.exists():
             power_gadget = PowerGadgetLinuxRAPL()
@@ -327,7 +331,9 @@ class PowerMeter:
             power_gadget = PowerGadgetLinuxMSR()
         else:
             LOGGER.warning("No power reading interface was found")
-            power_gadget = NoPowerGadget()
+            power_gadget = NoPowerGadget(
+                tdp=tdp, ram_power_usage=ram_power_usage
+            )
         return power_gadget
 
     def __set_gpu_power(self):
