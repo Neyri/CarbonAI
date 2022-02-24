@@ -144,3 +144,7 @@ cython_debug/
 .vscode/
 .pypirc
 .gitlab-ci.yml
+
+# carbonai files
+intelPowerLog.csv
+emissions.csv

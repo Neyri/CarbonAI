@@ -28,6 +28,9 @@ TOTAL_ENERGY_MEMORY = "Cumulative DRAM Energy (mWh)"
 TOTAL_ENERGY_PROCESS_MEMORY = "Cumulative process DRAM Energy (mWh)"
 CPU_PERCENT_USAGE = "CPU_percent_usage"
 MEMORY_PERCENT_USAGE = "memory_percent_usage"
+CPU_ESTIMATE_PARAMS = [0.144, 1.5267, -0.674]
+CPU_DEFAULT_TDP = 165
+RAM_ESTIMATE_CONSUMPTION = 0.4  # W/Gb
 
 AVAILABLE_STEPS = [
     "inference",

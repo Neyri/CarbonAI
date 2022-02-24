@@ -84,6 +84,15 @@ class PowerMeter:
         IntelPowerGadget.
     get_country : bool, default True
         Whether to retrieve user country location or not (uses the user IP).
+    cpu_tdp : int, default None
+        Used when there is no power gadget tool.
+        This argument can be used to specify
+        the Thermal Design Power of the processor you are using.
+        If not set we check our database of 700+ cpus.
+    ram_power_usage : float, default None
+        Used when there is no power gadget tool.
+        This argument can be used to specify the energy used per unit of ram.
+        By default we use 0.4 W/GB
     location : str, optional
         Country ISO Code available `here
         <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements>`_
@@ -149,6 +158,8 @@ class PowerMeter:
         user_name="",
         cpu_power_log_path="",
         powerlog_save_path="",
+        cpu_tdp=None,
+        ram_power_usage=None,
         get_country=True,
         location="",
         is_online=True,
@@ -168,6 +179,8 @@ class PowerMeter:
         self.power_gadget = powergadget_platform[self.platform](
             powerlog_path=cpu_power_log_path,
             powerlog_save_path=powerlog_save_path,
+            tdp=cpu_tdp,
+            ram_power_usage=ram_power_usage,
         )
 
         self.pue = self.__set_pue()

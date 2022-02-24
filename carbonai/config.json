@@ -1,7 +1,9 @@
 {
-    "project_name": "Project X",
-    "program_name": "Program X",
-    "client_name": "Client X",
-    "get_country": false,
-    "user_name": "customUsername"
+    "project_name": "example",
+    "program_name": "CarbonAI",
+    "client_name": "IDE",
+    "get_country": true,
+    "user_name": "TBD",
+    "cpu_tdp": 15,
+    "ram_power_usage": 0.3
 }
