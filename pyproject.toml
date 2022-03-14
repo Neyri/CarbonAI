@@ -16,9 +16,9 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = ">=3.7.1,<4"
-numpy = ">=1.20.3"
+numpy = ">=1.17.0"
 pandas = ">=1.0.5"
-requests = ">=2.20.1"
+requests = { version = ">=2.20.1", optional = true }
 fuzzywuzzy = ">=0.17.0"
 psutil = "^>=5.7.0"
 ipython = ">=7.12"
@@ -40,6 +40,9 @@ numpydoc = "^1.1.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.extras]
+online = ["requests"]
 
 [tool.black]
 line-length = 79 # override black's default line-length

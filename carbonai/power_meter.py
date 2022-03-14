@@ -21,7 +21,7 @@ import warnings
 from pathlib import Path
 
 import pandas as pd  # type: ignore
-import requests
+from importlib import import_module
 
 from .nvidia_power import NoGpuPower, NvidiaPower
 from .power_gadget import (
@@ -195,6 +195,8 @@ class PowerMeter:
         self.client_name = self.__set_project_entity(client_name)
 
         self.is_online = is_online
+        if self.is_online:
+            self.requests = import_module("requests")
         if api_endpoint:
             LOGGER.info("Api endpoint given, will save data online")
             self.api_endpoint = api_endpoint
@@ -252,15 +254,14 @@ class PowerMeter:
 
         return cuda_available
 
-    @staticmethod
-    def __get_country():
+    def __get_country(self):
         """
         Retrieve the ISO code country
         Beware of the encoding
         cf. from https://stackoverflow.com/questions/40059654/python-convert-
         a-bytes-array-into-json-format
         """
-        request = requests.get("http://ipinfo.io/json")
+        request = self.requests.get("http://ipinfo.io/json")
         response = request.content.decode("utf8").replace("'", '"')
         user_info = json.loads(response)
         return user_info["country"]
@@ -778,7 +779,7 @@ class PowerMeter:
         headers = {"Content-Type": "application/json"}
         data = json.dumps(info)
         try:
-            response = requests.request(
+            response = self.requests.request(
                 "POST",
                 self.api_endpoint,
                 headers=headers,
@@ -786,7 +787,7 @@ class PowerMeter:
                 timeout=1,
             )
             return response.status_code
-        except requests.exceptions.Timeout:
+        except self.requests.exceptions.Timeout:
             return 408
 
     def __record_data_to_csv_file(self, info):
